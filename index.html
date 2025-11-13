@@ -8,8 +8,19 @@
 
     <style>
         body {
-            background-image: repeating-linear-gradient(45deg, rgba(248, 184, 106, 0.17) 0px, rgba(248, 184, 106, 0.17) 2px, transparent 2px, transparent 4px), linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 255, 255), rgb(255, 255, 255));
+            background-image: repeating-linear-gradient(135deg, rgba(255, 136, 4, 0.2) 0px, rgba(255, 136, 4, 0.2) 2px, transparent 2px, transparent 4px), linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 255, 255));
             font-family: 'Operator Mono Lig', monospace;
+        }
+
+        #alert {
+            transition: all 0.3s ease-in-out;
+            transform: translate(-50%, -20px);
+            opacity: 0;
+        }
+
+        #alert.show {
+            transform: translate(-50%, 0);
+            opacity: 1;
         }
     </style>
 
@@ -18,18 +29,28 @@
 
 
 <body>
-    <div class="w-full max-w-xl mx-auto flex items-center justify-center h-screen">
-        <div class="w-full">
+    <div class="w-full max-w-xl mx-auto flex items-center justify-center h-screen  md:px-0">
+        <div class="w-full px-3 py-6 shadow-md rounded-md bg-orange-100/50 backdrop-blur-md">
             <!-- Password Generator Input -->
             <div class="flex items-center justify-between space-x-3">
                 <input type="text" placeholder="Password Generator" id="password-input" readonly
                     class="px-4 py-3 text-orange-500/80 bg-orange-50/50 w-full text-sm outline-none border-2 border-orange-300 rounded-md" />
+                <button onclick="run()" id="refresh-button"
+                    class="px-5 py-3 cursor-pointer text-base tracking-wider font-medium border-0 outline-0 0 bg-orange-200 hover:bg-orange-300 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-refresh text-orange-600">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
+                        <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
+                    </svg>
+                </button>
                 <button id="copy-button"
-                    class="px-5 py-3 cursor-pointer text-base tracking-wider font-medium border-0 outline-0 0 bg-orange-100 hover:bg-orange-200 rounded-md">
+                    class="px-5 py-3 cursor-pointer text-base tracking-wider font-medium border-0 outline-0 0 bg-orange-200 hover:bg-orange-300 rounded-md">
                     <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round"
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check text-orange-500">
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check text-orange-600">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path
                             d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
@@ -39,7 +60,7 @@
                     <svg id="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display: none;"
                         stroke-linejoin="round"
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check text-orange-500">
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check text-orange-600">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path d="M5 12l5 5l10 -10" />
                     </svg>
@@ -48,9 +69,25 @@
             <!-- Password Length OR Character Options -->
             <div class="w-full mt-4">
                 <div class="w-full  mx-auto mt-5">
-                    <label for="range" class="block text-md font-medium text-orange-400 mb-1">
-                        Password Length
-                    </label>
+                    <div class="flex items-center justify-between">
+                        <label for="range" class="block text-md font-medium text-orange-400 mb-1">
+                            Password Length
+                        </label>
+                        <!-- Password Check -->
+                        <div id="password-check"
+                            class="flex items-center space-x-2  px-3 py-2 rounded-md text-orange-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-zoom-check">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                                <path d="M21 21l-6 -6" />
+                                <path d="M7 10l2 2l4 -4" />
+                            </svg>
+                            <span id="password-strength">Average</span>
+                        </div>
+                    </div>
                     <div class="flex items-center gap-4">
                         <input type="range" id="range" min="1" max="30" value="8"
                             class="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer accent-orange-400 options" />
@@ -60,7 +97,7 @@
                 </div>
                 <!-- Checkboxes -->
                 <div class="mt-5">
-                    <div class="flex items-center justify-around">
+                    <div class="flex flex-wrap items-center gap-4 justify-around">
                         <label for="uppercase" class="flex items-center cursor-pointer">
                             <input id="uppercase" type="checkbox" class="hidden peer options characters" checked
                                 value="uppercase" />
@@ -120,12 +157,15 @@
                     </div>
                 </div>
             </div>
-            <!-- alert -->
-            <div id="alert"
-                class="absolute top-5 left-[50%] translate-x-[-50%]  bg-orange-100 p-4 rounded-md shadow-md text-orange-500"
-                role="alert" hidden>
+        </div>
 
-            </div>
+    </div>
+    <!-- alert -->
+    <div class="w-full mx-auto px-4 sm:px-0">
+        <div id="alert"
+            class="absolute top-5 left-1/2  bg-orange-100 p-4 sm:p-5 rounded-md shadow-md text-orange-500 w-[90%] sm:w-fit"
+            role="alert">
+            This is your alert message!
         </div>
     </div>
 </body>

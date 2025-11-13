@@ -7,6 +7,8 @@ const copyButton = document.querySelector('#copy-button');
 const copyIcon = document.querySelector('#copy-icon');
 const checkIcon = document.querySelector('#check-icon');
 const alert = document.querySelector('#alert');
+const passwordStrength = document.querySelector('#password-strength');
+const passwordCheck = document.querySelector('#password-check');
 
 const passwordItem = {
   lowercase: 'abcdefghijklmnopqrstuvwxyz',
@@ -17,10 +19,10 @@ const passwordItem = {
 
 // alert
 const alertMessage = (text) => {
-  alert.removeAttribute('hidden');
+  alert.classList.add('show');
   alert.innerHTML = text;
   setTimeout(() => {
-    alert.setAttribute('hidden', '');
+    alert.classList.remove('show');
   }, 2000);
 };
 
@@ -28,8 +30,6 @@ const alertMessage = (text) => {
 function run() {
   let password = '';
   let passwordValue = '';
-  // Update the range value when the range input is changed
-  rangeValue.textContent = range.value;
 
   // Get the checked options
   const checkedOptions = Array.from(characters)
@@ -72,6 +72,25 @@ copyButton.addEventListener('click', () => {
     checkIcon.style.display = 'none';
   }, 2000);
   navigator.clipboard.writeText(passwordInput.value);
+});
+
+// Add event listener to the range input
+range.addEventListener('input', () => {
+  rangeValue.textContent = range.value;
+  run();
+  if (range.value < 8) {
+    passwordStrength.textContent = 'Weak';
+    passwordCheck.classList.remove('text-orange-500');
+    passwordCheck.classList.add('text-red-500');
+  } else if (range.value < 12) {
+    passwordStrength.textContent = 'Average';
+    passwordCheck.classList.remove('text-red-500');
+    passwordCheck.classList.add('text-orange-500');
+  } else {
+    passwordStrength.textContent = 'Strong';
+    passwordCheck.classList.remove('text-orange-500');
+    passwordCheck.classList.add('text-green-500');
+  }
 });
 
 run();
