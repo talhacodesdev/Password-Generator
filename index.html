@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        body {
+            background-image: repeating-linear-gradient(45deg, rgba(248, 184, 106, 0.17) 0px, rgba(248, 184, 106, 0.17) 2px, transparent 2px, transparent 4px), linear-gradient(90deg, rgb(255, 255, 255), rgb(255, 255, 255), rgb(255, 255, 255));
+            font-family: 'Operator Mono Lig', monospace;
+        }
+    </style>
+
+
+</head>
+
+
+<body>
+    <div class="w-full max-w-xl mx-auto flex items-center justify-center h-screen">
+        <div class="w-full">
+            <!-- Password Generator Input -->
+            <div class="flex items-center justify-between space-x-3">
+                <input type="text" placeholder="Password Generator" id="password-input" readonly
+                    class="px-4 py-3 text-orange-500/80 bg-orange-50/50 w-full text-sm outline-none border-2 border-orange-300 rounded-md" />
+                <button id="copy-button"
+                    class="px-5 py-3 cursor-pointer text-base tracking-wider font-medium border-0 outline-0 0 bg-orange-100 hover:bg-orange-200 rounded-md">
+                    <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check text-orange-500">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" />
+                        <path
+                            d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
+                    </svg>
+                    <svg id="check-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display: none;"
+                        stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-check text-orange-500">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M5 12l5 5l10 -10" />
+                    </svg>
+                </button>
+            </div>
+            <!-- Password Length OR Character Options -->
+            <div class="w-full mt-4">
+                <div class="w-full  mx-auto mt-5">
+                    <label for="range" class="block text-md font-medium text-orange-400 mb-1">
+                        Password Length
+                    </label>
+                    <div class="flex items-center gap-4">
+                        <input type="range" id="range" min="1" max="30" value="8"
+                            class="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer accent-orange-400 options" />
+                        <output id="range-value"
+                            class="font-semibold bg-orange-400 text-white px-2 rounded-md text-lg">8</output>
+                    </div>
+                </div>
+                <!-- Checkboxes -->
+                <div class="mt-5">
+                    <div class="flex items-center justify-around">
+                        <label for="uppercase" class="flex items-center cursor-pointer">
+                            <input id="uppercase" type="checkbox" class="hidden peer options characters" checked
+                                value="uppercase" />
+                            <div
+                                class="relative flex items-center justify-center p-1 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-6 h-6 border-2 border-orange-500 rounded-md overflow-hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-orange-500"
+                                    viewBox="0 0 520 520">
+                                    <path
+                                        d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
+                                        data-name="7-Check" data-original="#000000" />
+                                </svg>
+                            </div>
+                            <p class="text-md text-orange-400 ml-4">Uppercase</p>
+                        </label>
+                        <label for="lowercase" class="flex items-center cursor-pointer">
+                            <input id="lowercase" type="checkbox" class="hidden peer options characters" checked
+                                value="lowercase" />
+                            <div
+                                class="relative flex items-center justify-center p-1 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-6 h-6 border-2 border-orange-500 rounded-md overflow-hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-orange-500"
+                                    viewBox="0 0 520 520">
+                                    <path
+                                        d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
+                                        data-name="7-Check" data-original="#000000" />
+                                </svg>
+                            </div>
+                            <p class="text-md text-orange-400 ml-4">Lowercase</p>
+                        </label>
+                        <label for="number" class="flex items-center cursor-pointer">
+                            <input id="number" type="checkbox" class="hidden peer options characters" checked
+                                value="number" />
+                            <div
+                                class="relative flex items-center justify-center p-1 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-6 h-6 border-2 border-orange-500 rounded-md overflow-hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-orange-500"
+                                    viewBox="0 0 520 520">
+                                    <path
+                                        d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
+                                        data-name="7-Check" data-original="#000000" />
+                                </svg>
+                            </div>
+                            <p class="text-md text-orange-400 ml-4">Number</p>
+                        </label>
+                        <label for="symbol" class="flex items-center cursor-pointer">
+                            <input id="symbol" type="checkbox" class="hidden peer options characters" checked
+                                value="symbol" />
+                            <div
+                                class="relative flex items-center justify-center p-1 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-6 h-6 border-2 border-orange-500 rounded-md overflow-hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-orange-500"
+                                    viewBox="0 0 520 520">
+                                    <path
+                                        d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
+                                        data-name="7-Check" data-original="#000000" />
+                                </svg>
+                            </div>
+                            <p class="text-md text-orange-400 ml-4">Symbol</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!-- alert -->
+            <div id="alert"
+                class="absolute top-5 left-[50%] translate-x-[-50%]  bg-orange-100 p-4 rounded-md shadow-md text-orange-500"
+                role="alert" hidden>
+
+            </div>
+        </div>
+    </div>
+</body>
+<script src="script.js"></script>
+
+</html>
